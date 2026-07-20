@@ -1,0 +1,32 @@
+generated: '2026-07-18'
+method: searched
+source: https://docs.deeptrace.com/api.md
+docs: https://docs.deeptrace.com/trigger-investigation
+summary:
+  types: [apiKey, http-bearer]
+  api_key_in: [header]
+  api_key_header: X-API-Key
+  api_key_prefix: dt_
+  oauth2_flows: []
+  notes: >-
+    A single Deeptrace API key authenticates every REST endpoint. It may be sent
+    either as the X-API-Key header or as an Authorization: Bearer <key> token — the
+    two are interchangeable. Keys are created and revoked in the dashboard at
+    Settings > API Keys (https://app.deeptrace.com/api-keys). Dashboard/web app
+    sign-in is handled separately by Clerk (clerk.deeptrace.com); the API key is the
+    programmatic credential.
+schemes:
+  - name: ApiKeyHeader
+    type: apiKey
+    in: header
+    parameter: X-API-Key
+    prefix: dt_
+    sources: [https://docs.deeptrace.com/trigger-investigation]
+  - name: BearerAuth
+    type: http
+    scheme: bearer
+    description: 'Authorization: Bearer <your_api_key> — the same Deeptrace API key.'
+    sources: [https://docs.deeptrace.com/send-chat, https://docs.deeptrace.com/get-chat]
+key_management:
+  create: https://app.deeptrace.com/api-keys
+  settings: https://app.deeptrace.com/settings
