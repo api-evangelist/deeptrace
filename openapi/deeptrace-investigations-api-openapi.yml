@@ -1,0 +1,183 @@
+openapi: 3.1.0
+info:
+  title: Deeptrace REST Chat Investigations API
+  description: Trigger and retrieve Deeptrace investigations, and drive AI-powered chat, programmatically. Deeptrace is an AI SRE that automatically investigates and root-causes production alerts by reasoning across logs, traces, metrics, and code.
+  version: v1
+  contact:
+    name: Deeptrace
+    url: https://docs.deeptrace.com
+servers:
+- url: https://api.deeptrace.com
+  description: Production
+security:
+- ApiKeyHeader: []
+- BearerAuth: []
+tags:
+- name: Investigations
+  description: Trigger and retrieve asynchronous root-cause investigations.
+paths:
+  /api/v1/investigate:
+    post:
+      operationId: triggerInvestigation
+      tags:
+      - Investigations
+      summary: Trigger Investigation
+      description: Start a new investigation. Returns an investigation_id immediately; the investigation runs in the background. Poll Get Investigation for results.
+      security:
+      - ApiKeyHeader: []
+      - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - query
+              properties:
+                query:
+                  type: string
+                  description: The investigation prompt describing the issue to investigate.
+            example:
+              query: Why are we seeing 500 errors on /checkout?
+      responses:
+        '200':
+          description: Investigation created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvestigationCreated'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /api/v1/investigations/{investigation_id}:
+    get:
+      operationId: getInvestigation
+      tags:
+      - Investigations
+      summary: Get Investigation
+      description: Retrieve the current status and results of an investigation. Poll until status is completed. While running, status is processing and result fields are null.
+      security:
+      - ApiKeyHeader: []
+      - BearerAuth: []
+      parameters:
+      - name: investigation_id
+        in: path
+        required: true
+        description: UUID of the investigation returned by Trigger Investigation.
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Investigation object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Investigation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  responses:
+    InternalError:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Expired or revoked API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: Validation error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request body or missing required fields.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    InvestigationCreated:
+      type: object
+      required:
+      - investigation_id
+      - status
+      properties:
+        investigation_id:
+          type: string
+          format: uuid
+          description: UUID of the created investigation.
+        status:
+          type: string
+          example: processing
+    Investigation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          description: processing or completed.
+          enum:
+          - processing
+          - completed
+        alert_summary:
+          type:
+          - string
+          - 'null'
+          description: One-line summary of the root cause; null while processing.
+        investigation_text:
+          type:
+          - string
+          - 'null'
+          description: Full root-cause analysis; null while processing.
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+  securitySchemes:
+    ApiKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: Deeptrace API key (dt_ prefix) from Settings > API Keys.
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Authorization: Bearer <your_api_key> using the same Deeptrace API key.'
