@@ -1,0 +1,24 @@
+generated: '2026-07-18'
+method: searched
+source: https://docs.deeptrace.com/api.md
+format: http-status
+envelope: json
+errors:
+  - status: 400
+    title: Bad Request
+    description: Invalid request body or missing required fields.
+  - status: 401
+    title: Unauthorized
+    description: Missing or invalid API key.
+  - status: 403
+    title: Forbidden
+    description: Expired or revoked API key.
+  - status: 404
+    title: Not Found
+    description: Resource not found.
+  - status: 422
+    title: Unprocessable Entity
+    description: Validation error.
+  - status: 500
+    title: Internal Server Error
+    description: Internal server error.

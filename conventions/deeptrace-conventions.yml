@@ -1,0 +1,52 @@
+generated: '2026-07-18'
+method: searched
+source: https://docs.deeptrace.com/api.md
+docs:
+  - https://docs.deeptrace.com/list-chats
+  - https://docs.deeptrace.com/send-chat
+  - https://docs.deeptrace.com/get-investigation
+authentication:
+  style: api-key
+  transport: 'X-API-Key header, or Authorization: Bearer <key>'
+  ref: authentication/deeptrace-authentication.yml
+base_url: https://api.deeptrace.com
+versioning:
+  scheme: uri-path
+  current: v1
+  example: /api/v1/investigate
+  note: >-
+    Most endpoints are namespaced under /api/v1/; the List Chats endpoint is
+    documented at /api/chat (unversioned) as of this capture.
+async_pattern:
+  style: trigger-and-poll
+  description: >-
+    Trigger Investigation returns an investigation_id immediately with
+    status=processing; clients poll Get Investigation until status=completed.
+    Typical completion is a couple of minutes.
+streaming:
+  supported: true
+  mechanism: Server-Sent Events (SSE)
+  enable: 'POST /api/v1/chat?stream=true'
+pagination:
+  style: page-number
+  params:
+    page: 1-based page number (default 1)
+    count: items per page (default 20, max 100)
+    my_chats: boolean filter to caller's own chats
+  applies_to: [listChats]
+idempotency:
+  supported: false
+  note: No idempotency-key header or mechanism is documented for Deeptrace's write endpoints.
+metadata:
+  content_type: application/json
+  ids: UUID (investigation_id, chat_id)
+error_envelope:
+  format: json
+  http_status_codes: [400, 401, 403, 404, 422, 500]
+  ref: errors/deeptrace-error-codes.yml
+rate_limiting:
+  documented: false
+cross_links:
+  errors: errors/deeptrace-error-codes.yml
+  lifecycle: lifecycle/deeptrace-lifecycle.yml
+  authentication: authentication/deeptrace-authentication.yml

@@ -1,0 +1,22 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/deeptrace-api-openapi.yml
+standards:
+  - id: openapi-3.1
+    conforms: true
+    evidence: Catalog-authored OpenAPI 3.1.0 from published REST docs (openapi/deeptrace-api-openapi.yml).
+  - id: apikey-auth
+    conforms: true
+    evidence: securitySchemes ApiKeyHeader (X-API-Key) + BearerAuth (same key).
+  - id: oauth2
+    conforms: false
+    evidence: No OAuth2 flows documented; single API-key credential.
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: Errors are plain HTTP status codes with a JSON body; no application/problem+json declared.
+  - id: sse-streaming
+    conforms: true
+    evidence: POST /api/v1/chat?stream=true returns Server-Sent Events.
+  - id: pagination
+    conforms: true
+    evidence: listChats supports page/count/my_chats page-number pagination.

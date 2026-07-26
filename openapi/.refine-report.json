@@ -1,0 +1,16 @@
+{
+  "provider": "deeptrace",
+  "sources": [
+    "deeptrace-chat-api-openapi.yml",
+    "deeptrace-investigations-api-openapi.yml"
+  ],
+  "outputs": [
+    "deeptrace-chat-api-openapi.yml",
+    "deeptrace-investigations-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

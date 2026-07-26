@@ -1,0 +1,22 @@
+generated: '2026-07-18'
+method: searched
+source: https://docs.deeptrace.com/changelog.md
+scheme: product-updates
+current_version: null
+note: >-
+  Deeptrace publishes a product-feature changelog (grouped by month) rather than a
+  semver API changelog. Recent window captured below.
+entries:
+  - label: March 2026
+    date: '2026-03'
+    breaking: false
+    highlights:
+      - Owner Attribution — identifies engineers likely responsible for an issue via
+        git blame, CODEOWNERS, and recent commit history; surfaces Likely Owners in
+        the UI and Slack, and exposes a {{code_owners}} escalation-rule variable.
+      - Channel Auto-Join — Deeptrace auto-joins new Slack channels matching name
+        patterns (e.g. inc-, sev0, sev1) and immediately kicks off an investigation.
+      - Actions — connect GitHub Actions workflows and custom scripts to trigger
+        deployments, revert PRs, run remediation, or create incident channels from a
+        natural-language prompt, with dry-run testing.
+      - Escalations — automatically route alerts to the right people/teams.

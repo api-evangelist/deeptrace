@@ -1,0 +1,353 @@
+# generated: '2026-07-18'
+# method: generated
+# source: https://docs.deeptrace.com/api.md (+ per-endpoint docs: trigger-investigation, get-investigation, send-chat, get-chat, list-chats)
+# note: Faithfully authored from Deeptrace's published REST API reference. The provider's
+#   docs host serves only the default Mintlify "Plant Store" placeholder at
+#   /api-reference/openapi.json, so no first-party machine-readable spec exists; this
+#   document captures the real, documented operations verbatim. Not an authoritative
+#   provider artifact — a catalog derivation to be replaced if Deeptrace publishes one.
+openapi: 3.1.0
+info:
+  title: Deeptrace REST API
+  description: >-
+    Trigger and retrieve Deeptrace investigations, and drive AI-powered chat,
+    programmatically. Deeptrace is an AI SRE that automatically investigates and
+    root-causes production alerts by reasoning across logs, traces, metrics, and code.
+  version: v1
+  contact:
+    name: Deeptrace
+    url: https://docs.deeptrace.com
+servers:
+  - url: https://api.deeptrace.com
+    description: Production
+security:
+  - ApiKeyHeader: []
+  - BearerAuth: []
+tags:
+  - name: Investigations
+    description: Trigger and retrieve asynchronous root-cause investigations.
+  - name: Chat
+    description: AI-powered conversational interface over your production systems.
+paths:
+  /api/v1/investigate:
+    post:
+      operationId: triggerInvestigation
+      tags: [Investigations]
+      summary: Trigger Investigation
+      description: >-
+        Start a new investigation. Returns an investigation_id immediately; the
+        investigation runs in the background. Poll Get Investigation for results.
+      security:
+        - ApiKeyHeader: []
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [query]
+              properties:
+                query:
+                  type: string
+                  description: The investigation prompt describing the issue to investigate.
+            example:
+              query: "Why are we seeing 500 errors on /checkout?"
+      responses:
+        '200':
+          description: Investigation created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvestigationCreated'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+        '500': { $ref: '#/components/responses/InternalError' }
+  /api/v1/investigations/{investigation_id}:
+    get:
+      operationId: getInvestigation
+      tags: [Investigations]
+      summary: Get Investigation
+      description: >-
+        Retrieve the current status and results of an investigation. Poll until
+        status is completed. While running, status is processing and result fields
+        are null.
+      security:
+        - ApiKeyHeader: []
+        - BearerAuth: []
+      parameters:
+        - name: investigation_id
+          in: path
+          required: true
+          description: UUID of the investigation returned by Trigger Investigation.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Investigation object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Investigation'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '500': { $ref: '#/components/responses/InternalError' }
+  /api/v1/chat:
+    post:
+      operationId: sendChatMessage
+      tags: [Chat]
+      summary: Send Chat Message
+      description: >-
+        Send a message and receive an AI-powered response. Supports multi-turn
+        conversations by passing a chat_id from a previous response. Set stream=true
+        for Server-Sent Events streaming.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: stream
+          in: query
+          required: false
+          description: Enable Server-Sent Events streaming.
+          schema:
+            type: boolean
+            default: false
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [messages]
+              properties:
+                messages:
+                  type: array
+                  minItems: 1
+                  items:
+                    $ref: '#/components/schemas/ChatInputMessage'
+                chat_id:
+                  type: string
+                  description: ID of an existing chat to continue a conversation.
+                model:
+                  type: string
+                  default: claude-opus-4-6
+                  description: Model to use for the response.
+                system_prompt:
+                  type: string
+                  description: Custom system prompt override.
+            example:
+              messages:
+                - role: user
+                  content: "What errors are happening in production right now?"
+      responses:
+        '200':
+          description: Chat response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '422': { $ref: '#/components/responses/ValidationError' }
+        '500': { $ref: '#/components/responses/InternalError' }
+  /api/v1/chats/{chat_id}:
+    get:
+      operationId: getChat
+      tags: [Chat]
+      summary: Get Chat
+      description: Retrieve a chat by ID including the full conversation history and metadata.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: chat_id
+          in: path
+          required: true
+          description: UUID of the chat returned by Send Chat Message.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Chat object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chat'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '500': { $ref: '#/components/responses/InternalError' }
+  /api/chat:
+    get:
+      operationId: listChats
+      tags: [Chat]
+      summary: List Chats
+      description: Get a paginated list of chats for your team.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          description: Page number (1-based).
+          schema:
+            type: integer
+            default: 1
+        - name: count
+          in: query
+          description: Items per page (max 100).
+          schema:
+            type: integer
+            default: 20
+            maximum: 100
+        - name: my_chats
+          in: query
+          description: Filter to only your chats.
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Paginated list of chats.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Paginated chat list (shape per Deeptrace docs).
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '500': { $ref: '#/components/responses/InternalError' }
+components:
+  securitySchemes:
+    ApiKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: Deeptrace API key (dt_ prefix) from Settings > API Keys.
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Authorization: Bearer <your_api_key> using the same Deeptrace API key.'
+  schemas:
+    InvestigationCreated:
+      type: object
+      required: [investigation_id, status]
+      properties:
+        investigation_id:
+          type: string
+          format: uuid
+          description: UUID of the created investigation.
+        status:
+          type: string
+          example: processing
+    Investigation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          description: processing or completed.
+          enum: [processing, completed]
+        alert_summary:
+          type: [string, "null"]
+          description: One-line summary of the root cause; null while processing.
+        investigation_text:
+          type: [string, "null"]
+          description: Full root-cause analysis; null while processing.
+    ChatInputMessage:
+      type: object
+      required: [role, content]
+      properties:
+        role:
+          type: string
+          enum: [user, assistant]
+        content:
+          type: string
+    ChatResponse:
+      type: object
+      properties:
+        chat_id:
+          type: string
+          format: uuid
+        response:
+          type: string
+    Chat:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatMessage'
+        data_sources:
+          type: array
+          items: {}
+        investigation_results:
+          type: array
+          items: {}
+        citation_map:
+          type: object
+    ChatMessage:
+      type: object
+      properties:
+        role:
+          type: string
+          enum: [user, assistant]
+        content:
+          type: array
+          description: Array of content blocks, e.g. {type text, text ...}.
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+              text:
+                type: string
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+  responses:
+    BadRequest:
+      description: Invalid request body or missing required fields.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    Forbidden:
+      description: Expired or revoked API key.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    ValidationError:
+      description: Validation error.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    InternalError:
+      description: Internal server error.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }

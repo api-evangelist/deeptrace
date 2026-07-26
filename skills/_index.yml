@@ -1,0 +1,12 @@
+generated: '2026-07-18'
+method: generated
+source: openapi/deeptrace-api-openapi.yml
+skills:
+  - file: deeptrace-investigate-and-poll.md
+    name: Trigger a Deeptrace investigation and poll for the root cause
+    api: openapi/deeptrace-api-openapi.yml
+    operations: [triggerInvestigation, getInvestigation]
+  - file: deeptrace-chat.md
+    name: Ask Deeptrace about production and continue the conversation
+    api: openapi/deeptrace-api-openapi.yml
+    operations: [sendChatMessage, getChat, listChats]

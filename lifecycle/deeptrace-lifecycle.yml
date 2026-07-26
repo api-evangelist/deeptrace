@@ -1,0 +1,15 @@
+generated: '2026-07-18'
+method: searched
+source: https://docs.deeptrace.com/api.md
+versioning:
+  scheme: uri-path
+  current: v1
+  docs: https://docs.deeptrace.com/api
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: No published deprecation or sunset policy found.
+status_page: https://status.deeptrace.com
+status_page_provider: incident.io
+status_components: [Website, App]
+deprecated_operations: []

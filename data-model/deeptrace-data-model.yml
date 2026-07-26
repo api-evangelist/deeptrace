@@ -1,0 +1,31 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/deeptrace-api-openapi.yml
+entities:
+  - name: Investigation
+    id: id (uuid)
+    id_alias: investigation_id
+    fields: [id, status, alert_summary, investigation_text]
+    states: [processing, completed]
+    created_by: triggerInvestigation
+    read_by: getInvestigation
+  - name: Chat
+    id: id (uuid)
+    id_alias: chat_id
+    fields: [id, created_at, messages, data_sources, investigation_results, citation_map]
+    created_by: sendChatMessage
+    read_by: [getChat, listChats]
+  - name: Message
+    parent: Chat
+    fields: [role, content]
+    roles: [user, assistant]
+relationships:
+  - from: Chat
+    to: Message
+    kind: has_many
+    via: messages
+  - from: Chat
+    to: Investigation
+    kind: has_many
+    via: investigation_results
+    note: A chat may surface one or more investigation results inline.

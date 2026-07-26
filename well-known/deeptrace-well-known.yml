@@ -1,0 +1,20 @@
+generated: '2026-07-18'
+method: searched
+source: live probes of /.well-known/* on deeptrace.com and docs.deeptrace.com
+note: >-
+  No /.well-known discovery documents are published. The 200s observed on
+  app.deeptrace.com are false positives — the Next.js/Clerk app serves its sign-in
+  SPA for any path and was excluded. No canonical WellKnown pointer is emitted.
+hosts:
+  - host: https://deeptrace.com
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+  - host: https://docs.deeptrace.com
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /llms.txt, status: 200, file: ../llms/deeptrace-llms.txt}

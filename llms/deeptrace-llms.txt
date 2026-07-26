@@ -1,0 +1,23 @@
+# Deeptrace
+
+## Docs
+
+- [REST API](https://docs.deeptrace.com/api.md): Trigger and retrieve Deeptrace investigations programmatically
+- [Changelog](https://docs.deeptrace.com/changelog.md): Deeptrace product updates and announcements
+- [Features](https://docs.deeptrace.com/features.md): Explore the key features in the Deeptrace web view
+- [Get Chat](https://docs.deeptrace.com/get-chat.md): Retrieve a chat by ID including the full conversation history
+- [Get Investigation](https://docs.deeptrace.com/get-investigation.md): Retrieve the status and results of a Deeptrace investigation
+- [Guide](https://docs.deeptrace.com/guide.md): Explore how to use Deeptrace in Slack
+- [Integrations ](https://docs.deeptrace.com/integrations.md): Onboarding made simple. Follow this guide to start solving alerts with Deeptrace in minutes.
+- [Introduction](https://docs.deeptrace.com/introduction.md): Welcome to Deeptrace, your 24/7 AI SRE and debugging co-pilot that automatically investigates and root-causes production alerts by reasoning across code, observability, and infrastructure.
+- [List Chats](https://docs.deeptrace.com/list-chats.md): Get a paginated list of chats for your team
+- [Send Chat Message](https://docs.deeptrace.com/send-chat.md): Send a message and receive an AI-powered response
+- [Trigger Investigation](https://docs.deeptrace.com/trigger-investigation.md): Start a new Deeptrace investigation asynchronously
+
+## OpenAPI Specs
+
+- [openapi](https://docs.deeptrace.com/api-reference/openapi.json)
+
+## Optional
+
+- [Documentation](https://docs.deeptrace.com)

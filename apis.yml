@@ -1,7 +1,29 @@
 aid: deeptrace
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/deeptrace.png
 name: Deeptrace
-description: Deeptrace is a company surfaced as a portfolio company of felicis and added to the API Evangelist
-  network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: >-
+  Deeptrace is an AI SRE (site reliability engineering) agent that automatically
+  investigates and root-causes production alerts by reasoning across logs, traces,
+  metrics, and code. It triages and prioritizes alerts, produces evidence-backed root
+  cause analyses in a couple of minutes, answers natural-language questions about
+  production from Slack or the web app, and can auto-generate remediation such as pull
+  requests and GitHub Actions. Deeptrace connects to the existing toolchain — Datadog,
+  Grafana, New Relic, Sentry, Honeycomb, Coralogix, AWS CloudWatch, PagerDuty, GitHub,
+  Linear, and Slack — to cut mean time to resolution. It exposes a REST API to trigger
+  investigations, poll results, and drive AI chat programmatically. Founded 2025 and
+  backed by Felicis, Matrix, and Y Combinator.
 url: https://raw.githubusercontent.com/api-evangelist/deeptrace/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -11,10 +33,58 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-18'
 tags:
 - Company
-apis: []
+- AIOps
+- Site Reliability Engineering
+- Observability
+- Incident Management
+- Root Cause Analysis
+- Monitoring
+- DevOps
+- AI Agent
+apis:
+- aid: deeptrace:deeptrace-chat-api
+  name: Deeptrace Chat API
+  description: AI-powered conversational interface over your production systems.
+  humanURL: https://docs.deeptrace.com/api
+  baseURL: https://api.deeptrace.com
+  tags:
+  - Chat
+  properties:
+  - type: OpenAPI
+    url: openapi/deeptrace-chat-api-openapi.yml
+  - type: Authentication
+    url: authentication/deeptrace-authentication.yml
+  - type: Conventions
+    url: conventions/deeptrace-conventions.yml
+  - type: ErrorCatalog
+    url: errors/deeptrace-error-codes.yml
+  - type: DataModel
+    url: data-model/deeptrace-data-model.yml
+  - type: Conformance
+    url: conformance/deeptrace-conformance.yml
+- aid: deeptrace:deeptrace-investigations-api
+  name: Deeptrace Investigations API
+  description: Trigger and retrieve asynchronous root-cause investigations.
+  humanURL: https://docs.deeptrace.com/api
+  baseURL: https://api.deeptrace.com
+  tags:
+  - Investigations
+  properties:
+  - type: OpenAPI
+    url: openapi/deeptrace-investigations-api-openapi.yml
+  - type: Authentication
+    url: authentication/deeptrace-authentication.yml
+  - type: Conventions
+    url: conventions/deeptrace-conventions.yml
+  - type: ErrorCatalog
+    url: errors/deeptrace-error-codes.yml
+  - type: DataModel
+    url: data-model/deeptrace-data-model.yml
+  - type: Conformance
+    url: conformance/deeptrace-conformance.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -23,3 +93,56 @@ maintainers:
 common:
 - type: Website
   url: https://deeptrace.com
+- type: Documentation
+  url: https://docs.deeptrace.com
+- type: APIReference
+  url: https://docs.deeptrace.com/api
+- type: GettingStarted
+  url: https://docs.deeptrace.com/integrations
+- type: DeveloperPortal
+  url: https://docs.deeptrace.com
+- type: Pricing
+  url: https://deeptrace.com/#pricing
+- type: SignUp
+  url: https://app.deeptrace.com/sign-up
+- type: Login
+  url: https://app.deeptrace.com/sign-in
+- type: TermsOfService
+  url: https://deeptrace.com/terms-of-service
+- type: PrivacyPolicy
+  url: https://deeptrace.com/privacy-policy
+- type: StatusPage
+  url: https://status.deeptrace.com
+- type: ChangeLog
+  url: https://docs.deeptrace.com/changelog
+- type: Authentication
+  url: authentication/deeptrace-authentication.yml
+- type: Conventions
+  url: conventions/deeptrace-conventions.yml
+- type: ErrorCatalog
+  url: errors/deeptrace-error-codes.yml
+- type: Lifecycle
+  url: lifecycle/deeptrace-lifecycle.yml
+- type: Conformance
+  url: conformance/deeptrace-conformance.yml
+- type: DataModel
+  url: data-model/deeptrace-data-model.yml
+- type: MCPServer
+  url: mcp/deeptrace-mcp.yml
+- type: LLMsTxt
+  url: llms/deeptrace-llms.txt
+- type: DomainSecurity
+  url: security/deeptrace-domain-security.yml
+- type: ChangeLog
+  url: changelog/deeptrace-changelog.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LinkedIn
+  url: https://www.linkedin.com/company/deeptrace-ai
+- type: Twitter
+  url: https://twitter.com/deeptraceai
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence
