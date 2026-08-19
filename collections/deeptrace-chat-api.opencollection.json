@@ -1,0 +1,111 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Deeptrace REST Chat API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-Key",
+      "value": "{{X-API-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Chat",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Send Chat Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deeptrace.com/api/v1/chat",
+            "params": [
+              {
+                "name": "stream",
+                "value": "",
+                "type": "query",
+                "description": "Enable Server-Sent Events streaming."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Send a message and receive an AI-powered response. Supports multi-turn conversations by passing a chat_id from a previous response. Set stream=true for Server-Sent Events streaming."
+        },
+        {
+          "info": {
+            "name": "Get Chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.deeptrace.com/api/v1/chats/:chat_id",
+            "params": [
+              {
+                "name": "chat_id",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the chat returned by Send Chat Message."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a chat by ID including the full conversation history and metadata."
+        },
+        {
+          "info": {
+            "name": "List Chats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.deeptrace.com/api/chat",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-based)."
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "Items per page (max 100)."
+              },
+              {
+                "name": "my_chats",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only your chats."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get a paginated list of chats for your team."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

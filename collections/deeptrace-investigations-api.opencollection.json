@@ -1,0 +1,72 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Deeptrace REST Chat Investigations API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-Key",
+      "value": "{{X-API-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Investigations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Trigger Investigation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deeptrace.com/api/v1/investigate",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-Key",
+              "value": "{{X-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Start a new investigation. Returns an investigation_id immediately; the investigation runs in the background. Poll Get Investigation for results."
+        },
+        {
+          "info": {
+            "name": "Get Investigation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.deeptrace.com/api/v1/investigations/:investigation_id",
+            "params": [
+              {
+                "name": "investigation_id",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the investigation returned by Trigger Investigation."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-Key",
+              "value": "{{X-API-Key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve the current status and results of an investigation. Poll until status is completed. While running, status is processing and result fields are null."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

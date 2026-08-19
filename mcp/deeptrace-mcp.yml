@@ -2,26 +2,31 @@ generated: '2026-07-18'
 method: derived
 status: candidate
 source: openapi/deeptrace-api-openapi.yml
-note: >-
-  No official first-party Deeptrace MCP server was found (checked docs, llms.txt,
-  npm @modelcontextprotocol, and the MCP registry). This is a candidate tool list
-  derived from the documented REST operations, to be replaced if Deeptrace ships one.
+note: No official first-party Deeptrace MCP server was found (checked docs, llms.txt, npm @modelcontextprotocol,
+  and the MCP registry). This is a candidate tool list derived from the documented REST operations, to
+  be replaced if Deeptrace ships one.
 server:
   name: deeptrace
   transport: http
 tools:
-  - name: trigger_investigation
-    description: Start a new Deeptrace investigation asynchronously; returns an investigation_id.
-    source_operation: openapi/deeptrace-api-openapi.yml#triggerInvestigation
-  - name: get_investigation
-    description: Retrieve the status and results of an investigation by id.
-    source_operation: openapi/deeptrace-api-openapi.yml#getInvestigation
-  - name: send_chat_message
-    description: Send a message and receive an AI-powered response about production systems.
-    source_operation: openapi/deeptrace-api-openapi.yml#sendChatMessage
-  - name: get_chat
-    description: Retrieve a chat by id including full conversation history.
-    source_operation: openapi/deeptrace-api-openapi.yml#getChat
-  - name: list_chats
-    description: Get a paginated list of chats for your team.
-    source_operation: openapi/deeptrace-api-openapi.yml#listChats
+- name: trigger_investigation
+  description: Start a new Deeptrace investigation asynchronously; returns an investigation_id.
+  source_operation: openapi/deeptrace-api-openapi.yml#triggerInvestigation
+- name: get_investigation
+  description: Retrieve the status and results of an investigation by id.
+  source_operation: openapi/deeptrace-api-openapi.yml#getInvestigation
+- name: send_chat_message
+  description: Send a message and receive an AI-powered response about production systems.
+  source_operation: openapi/deeptrace-api-openapi.yml#sendChatMessage
+- name: get_chat
+  description: Retrieve a chat by id including full conversation history.
+  source_operation: openapi/deeptrace-api-openapi.yml#getChat
+- name: list_chats
+  description: Get a paginated list of chats for your team.
+  source_operation: openapi/deeptrace-api-openapi.yml#listChats
+deployment:
+  mode: none
+  verified: derived
+  tools: 5
+  checked: '2026-08-12'
+  source: catalog MCP census
