@@ -56,6 +56,16 @@ tags:
 - Root Cause Analysis
 - Monitoring
 - DevOps
+- AI Agents
+tags_raw:
+- Company
+- AIOps
+- Site Reliability Engineering
+- Observability
+- Incident Management
+- Root Cause Analysis
+- Monitoring
+- DevOps
 - AI Agent
 apis:
 - aid: deeptrace:deeptrace-chat-api
