@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Deeptrace REST Chat Investigations API
+  title: Deeptrace REST Investigations API
   description: Trigger and retrieve Deeptrace investigations, and drive AI-powered chat, programmatically. Deeptrace is an AI SRE that automatically investigates and root-causes production alerts by reasoning across logs, traces, metrics, and code.
   version: v1
   contact:
@@ -92,8 +92,26 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   responses:
+    BadRequest:
+      description: Invalid request body or missing required fields.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: Validation error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     InternalError:
       description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found.
       content:
         application/json:
           schema:
@@ -106,24 +124,6 @@ components:
             $ref: '#/components/schemas/Error'
     Unauthorized:
       description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: Validation error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Resource not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Invalid request body or missing required fields.
       content:
         application/json:
           schema:
