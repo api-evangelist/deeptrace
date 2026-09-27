@@ -92,12 +92,6 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   responses:
-    BadRequest:
-      description: Invalid request body or missing required fields.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     ValidationError:
       description: Validation error.
       content:
@@ -106,6 +100,18 @@ components:
             $ref: '#/components/schemas/Error'
     InternalError:
       description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request body or missing required fields.
       content:
         application/json:
           schema:
@@ -122,26 +128,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    InvestigationCreated:
-      type: object
-      required:
-      - investigation_id
-      - status
-      properties:
-        investigation_id:
-          type: string
-          format: uuid
-          description: UUID of the created investigation.
-        status:
-          type: string
-          example: processing
     Investigation:
       type: object
       properties:
@@ -171,6 +158,19 @@ components:
           type: string
         message:
           type: string
+    InvestigationCreated:
+      type: object
+      required:
+      - investigation_id
+      - status
+      properties:
+        investigation_id:
+          type: string
+          format: uuid
+          description: UUID of the created investigation.
+        status:
+          type: string
+          example: processing
   securitySchemes:
     ApiKeyHeader:
       type: apiKey
