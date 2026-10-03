@@ -91,44 +91,20 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  responses:
-    ValidationError:
-      description: Validation error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    InternalError:
-      description: Internal server error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Invalid request body or missing required fields.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Resource not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Expired or revoked API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
+    InvestigationCreated:
+      type: object
+      required:
+      - investigation_id
+      - status
+      properties:
+        investigation_id:
+          type: string
+          format: uuid
+          description: UUID of the created investigation.
+        status:
+          type: string
+          example: processing
     Investigation:
       type: object
       properties:
@@ -158,19 +134,43 @@ components:
           type: string
         message:
           type: string
-    InvestigationCreated:
-      type: object
-      required:
-      - investigation_id
-      - status
-      properties:
-        investigation_id:
-          type: string
-          format: uuid
-          description: UUID of the created investigation.
-        status:
-          type: string
-          example: processing
+  responses:
+    BadRequest:
+      description: Invalid request body or missing required fields.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: Validation error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalError:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Expired or revoked API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     ApiKeyHeader:
       type: apiKey
