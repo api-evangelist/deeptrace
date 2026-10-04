@@ -155,20 +155,20 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   responses:
-    BadRequest:
-      description: Invalid request body or missing required fields.
+    Forbidden:
+      description: Expired or revoked API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
     ValidationError:
       description: Validation error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Expired or revoked API key.
       content:
         application/json:
           schema:
@@ -185,8 +185,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Resource not found.
+    BadRequest:
+      description: Invalid request body or missing required fields.
       content:
         application/json:
           schema:
@@ -204,6 +204,31 @@ components:
           - user
           - assistant
         content:
+          type: string
+    ChatMessage:
+      type: object
+      properties:
+        role:
+          type: string
+          enum:
+          - user
+          - assistant
+        content:
+          type: array
+          description: Array of content blocks, e.g. {type text, text ...}.
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+              text:
+                type: string
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
           type: string
     Chat:
       type: object
@@ -233,31 +258,6 @@ components:
           type: string
           format: uuid
         response:
-          type: string
-    ChatMessage:
-      type: object
-      properties:
-        role:
-          type: string
-          enum:
-          - user
-          - assistant
-        content:
-          type: array
-          description: Array of content blocks, e.g. {type text, text ...}.
-          items:
-            type: object
-            properties:
-              type:
-                type: string
-              text:
-                type: string
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
           type: string
   securitySchemes:
     ApiKeyHeader:

@@ -91,52 +91,15 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  schemas:
-    InvestigationCreated:
-      type: object
-      required:
-      - investigation_id
-      - status
-      properties:
-        investigation_id:
-          type: string
-          format: uuid
-          description: UUID of the created investigation.
-        status:
-          type: string
-          example: processing
-    Investigation:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        status:
-          type: string
-          description: processing or completed.
-          enum:
-          - processing
-          - completed
-        alert_summary:
-          type:
-          - string
-          - 'null'
-          description: One-line summary of the root cause; null while processing.
-        investigation_text:
-          type:
-          - string
-          - 'null'
-          description: Full root-cause analysis; null while processing.
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
   responses:
-    BadRequest:
-      description: Invalid request body or missing required fields.
+    Forbidden:
+      description: Expired or revoked API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found.
       content:
         application/json:
           schema:
@@ -159,18 +122,55 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Resource not found.
+    BadRequest:
+      description: Invalid request body or missing required fields.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Expired or revoked API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+  schemas:
+    InvestigationCreated:
+      type: object
+      required:
+      - investigation_id
+      - status
+      properties:
+        investigation_id:
+          type: string
+          format: uuid
+          description: UUID of the created investigation.
+        status:
+          type: string
+          example: processing
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    Investigation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          description: processing or completed.
+          enum:
+          - processing
+          - completed
+        alert_summary:
+          type:
+          - string
+          - 'null'
+          description: One-line summary of the root cause; null while processing.
+        investigation_text:
+          type:
+          - string
+          - 'null'
+          description: Full root-cause analysis; null while processing.
   securitySchemes:
     ApiKeyHeader:
       type: apiKey
