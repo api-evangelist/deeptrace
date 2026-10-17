@@ -155,32 +155,14 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   responses:
-    Forbidden:
-      description: Expired or revoked API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Resource not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: Validation error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     InternalError:
       description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Expired or revoked API key.
       content:
         application/json:
           schema:
@@ -191,7 +173,54 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: Validation error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    ChatResponse:
+      type: object
+      properties:
+        chat_id:
+          type: string
+          format: uuid
+        response:
+          type: string
+    Chat:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatMessage'
+        data_sources:
+          type: array
+          items: {}
+        investigation_results:
+          type: array
+          items: {}
+        citation_map:
+          type: object
     ChatInputMessage:
       type: object
       required:
@@ -229,35 +258,6 @@ components:
         error:
           type: string
         message:
-          type: string
-    Chat:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        created_at:
-          type: string
-          format: date-time
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChatMessage'
-        data_sources:
-          type: array
-          items: {}
-        investigation_results:
-          type: array
-          items: {}
-        citation_map:
-          type: object
-    ChatResponse:
-      type: object
-      properties:
-        chat_id:
-          type: string
-          format: uuid
-        response:
           type: string
   securitySchemes:
     ApiKeyHeader:

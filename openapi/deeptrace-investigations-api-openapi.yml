@@ -92,30 +92,6 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   responses:
-    Forbidden:
-      description: Expired or revoked API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Resource not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: Validation error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     InternalError:
       description: Internal server error.
       content:
@@ -128,27 +104,31 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Expired or revoked API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: Validation error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    InvestigationCreated:
-      type: object
-      required:
-      - investigation_id
-      - status
-      properties:
-        investigation_id:
-          type: string
-          format: uuid
-          description: UUID of the created investigation.
-        status:
-          type: string
-          example: processing
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
     Investigation:
       type: object
       properties:
@@ -171,6 +151,26 @@ components:
           - string
           - 'null'
           description: Full root-cause analysis; null while processing.
+    InvestigationCreated:
+      type: object
+      required:
+      - investigation_id
+      - status
+      properties:
+        investigation_id:
+          type: string
+          format: uuid
+          description: UUID of the created investigation.
+        status:
+          type: string
+          example: processing
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
   securitySchemes:
     ApiKeyHeader:
       type: apiKey
